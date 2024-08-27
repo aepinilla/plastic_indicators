@@ -1,0 +1,144 @@
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.leaflet-container {
+    height: 1000px;
+    width: 900px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#map {
+    height: 720px; 
+    width: 1280px; 
+}
+
+.info { 
+    padding: 6px 8px; 
+    font: 14px/16px Arial, Helvetica, sans-serif; 
+    background: white; 
+    background: rgba(255,255,255,0.8); 
+    box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+    border-radius: 5px; 
+} 
+
+.info h4 { 
+    margin: 0 0 5px; 
+    color: #777; 
+}
+
+.legend { 
+    text-align: left; 
+    line-height: 18px; 
+    color: #555; 
+} 
+
+.legend i { 
+    width: 18px; 
+    height: 18px; 
+    float: left; 
+    margin-right: 8px; 
+    opacity: 0.7; 
+}
+
+/* Style the tab */
+#menu {
+    max-width: 250px; /* Standard */
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    padding: 10px;
+    position: relative; /* Ensure the menu container has a position context */
+    z-index: 1; /* Set a lower z-index for the menu container */
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 13px 16px;
+    transition: 0.3s;
+    text-align: left;
+    font-size: 15px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    flex-grow: 1;
+}
+
+#population, #plastic_domestic_consumption {
+    height: 600px;
+    width: 100%;
+}
+
+h3 {
+    text-align: left;
+    font-size: medium;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 230px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000; /* Set a higher z-index for the tooltip */
+    bottom: 80%; /* Position above the icon */
+    left: 50%;
+    margin-left: -125px; /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tablinks:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tablinks {
+    position: relative; /* Ensure the button has a position context */
+}
+/* 
+.leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.leaflet-right {
+    width: 100%;
+}
+
+.leaflet-control-attribution a {
+    margin-left: 15px;
+    text-align: left;
+} */
