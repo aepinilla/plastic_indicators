@@ -32,11 +32,162 @@ function getColorGroup(nameInDatabase) {
     return colorGroup;
 }
 
+const colorGroups = {
+    blue: ['#08306b', '#08519c', '#2171b5', '#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7'],
+    green: ['#00441b', '#006d2c', '#238b45', '#41ab5d', '#74c476', '#a1d99b', '#c7e9c0', '#e5f5e0'],
+    yellow: ['#b37b00', '#d48800', '#f59e00', '#ffb300', '#ffcc33', '#ffe066', '#fff399', '#ffffcc'],
+};
+
+function getColor(d, colorGroup, grades) {
+    if (!grades || grades.length === 0) {
+        console.error('Grades array is undefined or empty');
+        return '#808080'; // Default color for error cases
+    }
+
+    if (d === "NA") {
+        return '#808080'; // Grey color for "No data available"
+    }
+
+    let colors;
+    if (colorGroup === "plastic") {
+        colors = colorGroups.blue;
+    } else if (colorGroup === "msw") {
+        colors = colorGroups.yellow;
+    } else {
+        colors = colorGroups[colorGroup] || colorGroups['green']; // Default to 'green' if colorGroup is not found
+    }
+
+    return d > grades[grades.length - 1] ? colors[0] :
+           d > grades[grades.length - 2] ? colors[1] :
+           d > grades[grades.length - 3] ? colors[2] :
+           d > grades[grades.length - 4] ? colors[3] :
+           d > grades[grades.length - 5] ? colors[4] :
+           d > grades[grades.length - 6] ? colors[5] :
+           d > grades[grades.length - 7] ? colors[6] : colors[7];
+}
+
+// function getColor(d, colorGroup, grades) {
+//     if (d === "NA") {
+//         return '#808080'; // Grey color
+//     }
+
+//     let colors;
+//     if (colorGroup === "plastic") {
+//         colors = colorGroups.blue;
+//     } else if (colorGroup === "msw") {
+//         colors = colorGroups.yellow;
+//     } else {
+//         colors = colorGroups[colorGroup] || colorGroups['green']; // Default to 'green' if colorGroup is not found
+//     }
+
+//     return d > grades[grades.length - 1] ? colors[0] :
+//            d > grades[grades.length - 2] ? colors[1] :
+//            d > grades[grades.length - 3] ? colors[2] :
+//            d > grades[grades.length - 4] ? colors[3] :
+//            d > grades[grades.length - 5] ? colors[4] :
+//            d > grades[grades.length - 6] ? colors[5] :
+//            d > grades[grades.length - 7] ? colors[6] : colors[7];
+// }
+
+// function getColor(d, colorGroup) {
+//     // Check if the value is "NA" and return grey color
+//     if (d === "NA") {
+//         return '#808080'; // Grey color
+//     }
+
+//     let colors;
+//     if (colorGroup === "plastic") {
+//         colors = colorGroups.blue;
+//     } else if (colorGroup === "msw") {
+//         colors = colorGroups.yellow;
+//     } else {
+//         colors = colorGroups[colorGroup] || colorGroups['green']; // Default to 'green' if colorGroup is not found
+//     }
+
+//     return d > grades[grades.length - 1] ? colors[0] :
+//            d > grades[grades.length - 2] ? colors[1] :
+//            d > grades[grades.length - 3] ? colors[2] :
+//            d > grades[grades.length - 4] ? colors[3] :
+//            d > grades[grades.length - 5] ? colors[4] :
+//            d > grades[grades.length - 6] ? colors[5] :
+//            d > grades[grades.length - 7] ? colors[6] : colors[7];
+// }
+// function getColor(d, colorGroup) {
+//     // Check if the value is "NA" and return grey color
+//     if (d === "NA") {
+//         return '#808080'; // Grey color
+//     }
+
+//     let colors;
+//     if (colorGroup === "plastic") {
+//         colors = colorGroups.blue;
+//     } else if (colorGroup === "msw") {
+//         colors = colorGroups.yellow;
+//     } else {
+//         colors = colorGroups[colorGroup] || colorGroups['green']; // Default to 'group1' if colorGroup is not found
+//     }
+
+//     return d > grades[grades.length - 1] ? colors[0] :
+//            d > grades[grades.length - 2] ? colors[1] :
+//            d > grades[grades.length - 3] ? colors[2] :
+//            d > grades[grades.length - 4] ? colors[3] :
+//            d > grades[grades.length - 5] ? colors[4] :
+//            d > grades[grades.length - 6] ? colors[5] :
+//            d > grades[grades.length - 7] ? colors[6] : colors[7];
+// }
+
 // Function to round numbers to the nearest power of 10
 function roundToNearestPowerOf10(num) {
     return Math.pow(10, Math.floor(Math.log10(num)));
 }
 
+function create_percent_intervals(values) {
+    // Filter out zero and "NA" values if necessary
+    const filteredValues = values.filter(value => value !== 0 && value !== "NA");
+
+    // If all values are zero or "NA" or the array is empty after filtering, handle it
+    if (filteredValues.length === 0) {
+        return [0, 25, 50, 75, 100]; // Return default intervals
+    }
+
+    // Sort the filtered values
+    filteredValues.sort((a, b) => a - b);
+
+    // Calculate quantiles
+    const quantiles = [];
+    const numQuantiles = 4;
+
+    for (let i = 0; i <= numQuantiles; i++) {
+        const quantileIndex = Math.floor((i / numQuantiles) * (filteredValues.length - 1));
+        quantiles.push(filteredValues[quantileIndex]);
+    }
+
+    return quantiles;
+}
+
+// function create_percent_intervals(values, unit) {
+//     // Filter out zero and "NA" values if necessary
+//     const filteredValues = values.filter(value => value !== 0 && value !== "NA");
+
+//     // If all values are zero or "NA" or the array is empty after filtering, handle it
+//     if (filteredValues.length === 0) {
+//         return [0]; // Return a single interval with 0
+//     }
+
+//     // Sort the filtered values
+//     filteredValues.sort((a, b) => a - b);
+
+//     // Calculate quantiles
+//     const quantiles = [];
+//     const numQuantiles = 4;
+
+//     for (let i = 0; i <= numQuantiles; i++) {
+//         const quantileIndex = Math.floor((i / numQuantiles) * (filteredValues.length - 1));
+//         quantiles.push(filteredValues[quantileIndex]);
+//     }
+
+//     return quantiles;
+// }
 
 function create_dynamic_intervals(values) {
     // Filter out zero and "NA" values if necessary
@@ -80,44 +231,6 @@ function capitalizeWords(string) {
         }
         return word;
     }).join(' ');
-}
-
-// function capitalizeFirstWord(string) {
-//     if (typeof string !== 'string' || string.length === 0) {
-//         return string;
-//     }
-//     return string.charAt(0).toUpperCase() + string.slice(1);
-// }
-
-const colorGroups = {
-    blue: ['#08306b', '#08519c', '#2171b5', '#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7'],
-    green: ['#00441b', '#006d2c', '#238b45', '#41ab5d', '#74c476', '#a1d99b', '#c7e9c0', '#e5f5e0'],
-    yellow: ['#b37b00', '#cc8e00', '#e6a000', '#ffb300', '#ffc733', '#ffd966', '#ffeb99', '#ffffcc'],
-};
-
-
-function getColor(d, colorGroup) {
-    // Check if the value is "NA" and return grey color
-    if (d === "NA") {
-        return '#808080'; // Grey color
-    }
-
-    let colors;
-    if (colorGroup === "plastic") {
-        colors = colorGroups.blue;
-    } else if (colorGroup === "msw") {
-        colors = colorGroups.yellow;
-    } else {
-        colors = colorGroups[colorGroup] || colorGroups['green']; // Default to 'group1' if colorGroup is not found
-    }
-
-    return d > grades[grades.length - 1] ? colors[0] :
-           d > grades[grades.length - 2] ? colors[1] :
-           d > grades[grades.length - 3] ? colors[2] :
-           d > grades[grades.length - 4] ? colors[3] :
-           d > grades[grades.length - 5] ? colors[4] :
-           d > grades[grades.length - 6] ? colors[5] :
-           d > grades[grades.length - 7] ? colors[6] : colors[7];
 }
 
 function style(feature) {

@@ -24,6 +24,67 @@ function generatePopupContent(props) {
     }
 }
 
+function createLegend(map, property_name, colorGroup, values) {
+    const legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = function () {
+        const div = L.DomUtil.create('div', 'info legend');
+        const unit = getUnitOfMeasure(property_name);
+        let grades;
+
+        if (unit === '%') {
+            grades = create_percent_intervals(values, unit);
+        } else {
+            grades = create_dynamic_intervals(values);
+        }
+
+        const labels = [];
+
+        // Create the title div
+        const titleDiv = L.DomUtil.create('div', 'legend-title', div);
+        let displayUnit = unit;
+        if (unit === '%') {
+            displayUnit = 'Percentage';
+        }
+        titleDiv.innerHTML = `<strong>${displayUnit}</strong><br><br>`;
+
+        // Loop through our density intervals and generate a label with a colored square for each interval
+        for (let i = 0; i < grades.length - 1; i++) {
+            let from = grades[i];
+            let to = grades[i + 1];
+
+            if (unit === '%') {
+                from *= 100;
+                to = to ? to * 100 : to;
+            }
+
+            labels.push(
+                '<i style="background:' + getColor(from + 1, colorGroup, grades) + '"></i> ' +
+                from + (to ? '&ndash;' + to + '<br>' : '+')
+            );
+        }
+
+        // Check if any feature has "NA" data
+        let hasNoData = false;
+        asiaGeoData.features.forEach(feature => {
+            if (feature.properties[property_name] === "NA") {
+                hasNoData = true;
+            }
+        });
+
+        // Add grey color for "No data available" if applicable
+        if (hasNoData) {
+            labels.push(
+                '<i style="background:grey"></i> No data available'
+            );
+        }
+
+        div.innerHTML += labels.join('<br>');
+        return div;
+    };
+
+    legend.addTo(map);
+}
 
 function initializeMap(map_title, property_name, container_name) {
     if (dataMap) {
@@ -49,7 +110,7 @@ function initializeMap(map_title, property_name, container_name) {
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
-        minZoom: 5,
+        minZoom: 3,
         attribution: '&copy; <a target="blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> Tiles taken from &copy; <a target="blank" href="https://carto.com/attributions">CARTO</a>'
     }).addTo(dataMap);
 
@@ -64,7 +125,11 @@ function initializeMap(map_title, property_name, container_name) {
 
     // Add data sources
     sources = indicatorsData.features
-    // Create a custom control for the attribution
+
+    // Assuming colorGroup is an array or object that you need to define
+    const colorGroup = getColorGroup(property_name); // Define this function based on your logic
+
+    // Custom attribution control
     const customAttribution = L.Control.extend({
         options: {
             position: 'bottomleft' // Position the control in the bottom left corner
@@ -78,15 +143,69 @@ function initializeMap(map_title, property_name, container_name) {
             return div;
         }
     });
-    
+
     // Add the custom attribution control to the map
     dataMap.addControl(new customAttribution());
 
+    let grades;
+    
+    // // Create a custom control for the attribution
+    // const customAttribution = L.Control.extend({
+    //     options: {
+    //         position: 'bottomleft' // Position the control in the bottom left corner
+    //     },
+
+    //     onAdd: function (map) {
+    //         // Create a div with a class name
+    //         this_source = sources.find(source => source.name_in_database === property_name);
+    //         const div = L.DomUtil.create('div', 'custom-attribution');
+    //         div.innerHTML = `<div style="text-align: left; max-width: 300px">Source: ${this_source.sources}</div>`;
+    //         return div;
+    //     }
+    // });
+    
+    // // Add the custom attribution control to the map
+    // dataMap.addControl(new customAttribution());
+
+    // let grades;
+    
     if (property_name === 'marine_activities_plastic') {
         console.log('marine_activities_plastic');
     } else {
-        grades = create_dynamic_intervals(values);
+        const unit = getUnitOfMeasure(property_name);
+        if (unit === '%') {
+            grades = create_percent_intervals(values, unit);
+        } else {
+            grades = create_dynamic_intervals(values);
+        }
     }
+    
+    // Ensure grades is defined before using it
+    if (!grades || grades.length === 0) {
+        console.error('Grades array is undefined or empty');
+        grades = [0, 25, 50, 75, 100]; // Default grades as a fallback
+    }
+
+    // if (property_name === 'marine_activities_plastic') {
+    //     console.log('marine_activities_plastic');
+    // } else {
+    //     const unit = getUnitOfMeasure(property_name);
+    //     if (unit === '%') {
+    //         grades = create_percent_intervals(values, unit);
+    //     } else {
+    //         grades = create_dynamic_intervals(values);
+    //     }
+    // }
+    // if (property_name === 'marine_activities_plastic') {
+    //     console.log('marine_activities_plastic');
+    // } else {
+    //     const unit = getUnitOfMeasure(property_name);
+    //     if (unit === '%') {
+    //         grades = create_percent_intervals(values, unit);
+    //     } else {
+    //         grades = create_dynamic_intervals(values);
+    //     }
+    // }
 
     // Create a popup instance for hover
     const hoverPopup = L.popup();
@@ -136,49 +255,10 @@ function initializeMap(map_title, property_name, container_name) {
         });
     }
 
-    // dataMap.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
-
-    legend.onAdd = function (map) {
-        const div = L.DomUtil.create('div', 'info legend');
-
-        // Create the title div
-        const titleDiv = L.DomUtil.create('div', 'legend-title', div);
-        const unit = getUnitOfMeasure(property_name);
-
-        // Change unit to "Percentage" if it is "%"
-        let displayUnit = unit;
-        if (unit === '%') {
-            displayUnit = 'Percentage';
-        }
-
-        // Set the unit as the title with a line break
-        titleDiv.innerHTML = `<strong>${displayUnit}</strong><br><br>`;
-        
-        const labels = [];
-        let from, to;
-        for (let i = 0; i < grades.length; i++) {
-            from = grades[i];
-            to = grades[i + 1];
-
-            // Multiply by 100 if the unit is "Percentage"
-            if (unit === '%') {
-                from *= 100;
-                to = to ? to * 100 : to;
-            }
-            const colorGroup = getColorGroup(property_name);
-
-            labels.push(
-                `<i style="background:${getColor(from + 1, colorGroup)}"></i> ${from.toLocaleString()} ${to ? ` &ndash; ${to.toLocaleString()}` : '+'}`
-            );
-        }
-
-        // Create the numbers div and append the labels
-        const numbersDiv = L.DomUtil.create('div', 'legend-numbers', div);
-        numbersDiv.innerHTML = labels.join('<br>');
-
-        return div;
+    legend.onAdd = function (dataMap) {
+        return createLegend(dataMap, property_name, colorGroup, values);
     };
-
+    
     legend.addTo(dataMap);
 }
 
