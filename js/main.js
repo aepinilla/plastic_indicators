@@ -3,6 +3,27 @@ let mouseX = 0;
 let mouseY = 0;
 const container = document.getElementById('parent-container'); // Replace 'container-id' with the actual ID of your container
 
+function generatePopupContent(props) {
+    if (props) {
+        const unit = getUnitOfMeasure(property_name);
+        let value = props[property_name];
+
+        // Handle cases where the value is "NA"
+        if (value === "NA") {
+            return `<h4>${map_title}</h4><b>${props.name}</b><br />No data available`;
+        }
+
+        // Multiply the value by 100 if the unit is '%'
+        if (unit === '%') {
+            value *= 100;
+        }
+        return props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? `${unit}` : ''}</sup>` : 'Hover over a country';
+    } else {
+        return `<h4>${map_title}</h4>Hover over a country`;
+    }
+}
+
+
 function initializeMap(map_title, property_name, container_name) {
     if (dataMap) {
         dataMap.remove();
@@ -40,34 +61,34 @@ function initializeMap(map_title, property_name, container_name) {
         return this._div;
     };
 
-    info.update = function (props) {
-        if (props) {
-            const unit = getUnitOfMeasure(property_name);
-            let value = props[property_name];
+    // info.update = function (props) {
+    //     if (props) {
+    //         const unit = getUnitOfMeasure(property_name);
+    //         let value = props[property_name];
     
-            // Handle cases where the value is "NA"
-            if (value === "NA") {
-                this._div.innerHTML = `<h4>${map_title}</h4><b>${props.name}</b><br />No data available`;
-                return;
-            }
+    //         // Handle cases where the value is "NA"
+    //         if (value === "NA") {
+    //             this._div.innerHTML = `<h4>${map_title}</h4><b>${props.name}</b><br />No data available`;
+    //             return;
+    //         }
     
-            // Multiply the value by 100 if the unit is '%'
-            if (unit === '%') {
-                value *= 100;
-                const contents = props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? `${unit}` : ''}</sup>` : 'Hover over a country';
-                this._div.innerHTML = `<h4>${map_title}</h4>${contents}`;
-            } else {
-                const contents = props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')} ${unit ? ` ${unit}` : ''}</sup>` : 'Hover over a country';
-                this._div.innerHTML = `<h4>${map_title}</h4>${contents}`;
-            }
+    //         // Multiply the value by 100 if the unit is '%'
+    //         if (unit === '%') {
+    //             value *= 100;
+    //             const contents = props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? `${unit}` : ''}</sup>` : 'Hover over a country';
+    //             this._div.innerHTML = `<h4>${map_title}</h4>${contents}`;
+    //         } else {
+    //             const contents = props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')} ${unit ? ` ${unit}` : ''}</sup>` : 'Hover over a country';
+    //             this._div.innerHTML = `<h4>${map_title}</h4>${contents}`;
+    //         }
     
-        } else {
-            this._div.innerHTML = `<h4>${map_title}</h4>Hover over a country`;
-        }
+    //     } else {
+    //         this._div.innerHTML = `<h4>${map_title}</h4>Hover over a country`;
+    //     }
 
-    };
+    // };
    
-    info.addTo(dataMap);
+    // info.addTo(dataMap);
 
     // Add data sources
     sources = indicatorsData.features
@@ -89,16 +110,14 @@ function initializeMap(map_title, property_name, container_name) {
     // Add the custom attribution control to the map
     dataMap.addControl(new customAttribution());
 
-    // this_source = sources.find(source => source.name_in_database === property_name);
-    // dataMap.attributionControl.addAttribution(`<div style="text-align: left;"><br>Data source: ${this_source.sources}</div>`);
-    
-
     if (property_name === 'marine_activities_plastic') {
         console.log('marine_activities_plastic');
     } else {
         grades = create_dynamic_intervals(values);
     }
 
+    // Create a popup instance for hover
+    const hoverPopup = L.popup();
 
     function highlightFeature(e) {
         const layer = e.target;
@@ -112,7 +131,15 @@ function initializeMap(map_title, property_name, container_name) {
 
         layer.bringToFront();
 
-        info.update(layer.feature.properties);
+        // Show popup with "lala" text at the mouse coordinates
+        const { latlng } = e;
+        const content = generatePopupContent(layer.feature.properties);
+        hoverPopup
+            .setLatLng(latlng)
+            .setContent(content)
+            .openOn(dataMap);
+
+        // info.update(layer.feature.properties);
     }
 
     /* global statesData */
@@ -123,7 +150,7 @@ function initializeMap(map_title, property_name, container_name) {
 
     function resetHighlight(e) {
         geojson.resetStyle(e.target);
-        info.update();
+        // info.update();
     }
 
     function zoomToFeature(e) {
@@ -214,11 +241,6 @@ function openTab(evt, tabName) {
             );
         }
     });
-
-    // Initialize an empty map if the "plastic leakage" tab is opened
-    if (tabName === 'leakage_container') {
-        initializeLeakageMap();
-    }
 }
 
 // Open the default tab

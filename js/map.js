@@ -151,58 +151,6 @@ function initializeMap(map_title, property_name, container_name) {
     legend.addTo(dataMap);
 }
 
-// Function to initialize the leakage map with GeoJSON data
-function initializeLeakageMap() {
-    const mapContainer = document.getElementById('leakage_container');
-    if (!mapContainer) {
-        console.error('Leakage container not found');
-        return;
-    }
-    
-    // Initialize the map
-    const dataMap = L.map('leakage_container').setView([0, 0], 2); // Adjust the initial view as needed
-
-    // Load the GeoJSON data
-    fetch('../data/geojson/afghanistan/Final-Rivers.geojson')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(geojsonData => {
-            console.log('GeoJSON data loaded:', geojsonData); // Log the loaded data
-            // Add the GeoJSON data to the map
-            L.geoJSON(geojsonData).addTo(dataMap);
-
-            // Add legend control to the map
-            const legend = L.control({ position: 'bottomright' });
-
-            legend.onAdd = function (map) {
-                const div = L.DomUtil.create('div', 'info legend');
-                const labels = ['<strong>Legend</strong>'];
-                const categories = ['Category 1', 'Category 2', 'Category 3'];
-
-                for (let i = 0; i < categories.length; i++) {
-                    labels.push(
-                        '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
-                        (categories[i] ? categories[i] : '+')
-                    );
-                }
-
-                const numbersDiv = L.DomUtil.create('div', 'legend-numbers', div);
-                numbersDiv.innerHTML = labels.join('<br>');
-
-                return div;
-            };
-
-            legend.addTo(dataMap);
-        })
-        .catch(error => {
-            console.error('Error loading GeoJSON data:', error);
-        });
-}
-
 
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;

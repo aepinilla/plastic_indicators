@@ -4,16 +4,19 @@ body {
     margin: 0;
 }
 
-.leaflet-container {
-    height: 1000px;
-    width: 900px;
-    max-width: 100%;
-    max-height: 100%;
+h3 {
+    text-align: left;
+    font-size: medium;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.3rem !important;
 }
 
-#map {
-    height: 720px; 
-    width: 1280px; 
+.container-fluid {
+    background-color: #f8f9fa;
+}
+
+.group-container {
+    margin-top: 20px;
 }
 
 .info { 
@@ -30,6 +33,16 @@ body {
     color: #777; 
 }
 
+.leaflet-container {
+    height: 100vh;
+    width: 100%;
+}
+
+.leaflet-control-attribution a {
+    margin-left: 15px;
+    text-align: left;
+}
+
 .legend { 
     text-align: left; 
     line-height: 18px; 
@@ -44,23 +57,15 @@ body {
     opacity: 0.7; 
 }
 
-/* Style the tab */
-#menu {
-    max-width: 250px; /* Standard */
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-    padding: 10px;
-    position: relative; /* Ensure the menu container has a position context */
-    z-index: 1; /* Set a lower z-index for the menu container */
+.navbar {
+    margin-top: 20px;
+    padding: 0 !important;
 }
 
 .tab {
     overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
 }
 
-/* Style the buttons inside the tab */
 .tab button {
     background-color: inherit;
     width: 100%;
@@ -73,34 +78,20 @@ body {
     font-size: 15px;
 }
 
-/* Change background color of buttons on hover */
 .tab button:hover {
     background-color: #ddd;
 }
 
-/* Create an active/current tablink class */
 .tab button.active {
     background-color: #ccc;
 }
 
-/* Style the tab content */
 .tabcontent {
     display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
     flex-grow: 1;
-}
-
-#population, #plastic_domestic_consumption {
-    height: 600px;
-    width: 100%;
-}
-
-h3 {
-    text-align: left;
-    font-size: medium;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .tooltip-text {
@@ -128,17 +119,3 @@ h3 {
 .tablinks {
     position: relative; /* Ensure the button has a position context */
 }
-/* 
-.leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
-    width: 100%;
-    padding-top: 10px;
-}
-
-.leaflet-right {
-    width: 100%;
-}
-
-.leaflet-control-attribution a {
-    margin-left: 15px;
-    text-align: left;
-} */
