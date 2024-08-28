@@ -11,12 +11,20 @@ h3 {
     font-size: 1.3rem !important;
 }
 
+button:focus {
+    outline: none !important;
+}
+
 .container-fluid {
     background-color: #f8f9fa;
 }
 
 .group-container {
     margin-top: 20px;
+}
+
+.group-container button {
+    font-size: 16px !important;
 }
 
 .info { 
@@ -42,6 +50,11 @@ h3 {
     margin-left: 15px;
     text-align: left;
 }
+
+.leaflet-popup-content {
+    font-size: 1rem;
+}
+
 
 .legend { 
     text-align: left; 
@@ -119,3 +132,19 @@ h3 {
 .tablinks {
     position: relative; /* Ensure the button has a position context */
 }
+
+@media screen and (max-width: 720px) {
+    .navbar {
+        margin-bottom: 20px;
+    }
+
+    .leaflet-container {
+        height: 90vh;
+        width: 100%;
+    }
+
+    .custom-attribution {
+        margin-bottom: 40px !important;
+    }
+}
+

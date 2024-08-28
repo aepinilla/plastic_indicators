@@ -146,3 +146,14 @@ function whiteStyle(feature) {
         fillOpacity:  1
     };
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const menu = document.getElementById('navbarNav');
+    const buttons = menu.getElementsByClassName('tablinks');
+
+    Array.from(buttons).forEach(button => {
+        button.addEventListener('click', function() {
+            menu.classList.remove('show'); // Remove the "show" class
+        });
+    });
+});

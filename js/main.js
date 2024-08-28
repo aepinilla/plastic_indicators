@@ -1,7 +1,5 @@
 let dataMap;
-let mouseX = 0;
-let mouseY = 0;
-const container = document.getElementById('parent-container'); // Replace 'container-id' with the actual ID of your container
+const container = document.getElementById('parent-container');
 
 function generatePopupContent(props) {
     if (props) {
@@ -10,14 +8,17 @@ function generatePopupContent(props) {
 
         // Handle cases where the value is "NA"
         if (value === "NA") {
-            return `<h4>${map_title}</h4><b>${props.name}</b><br />No data available`;
+            return `<b>${props.name}</b><br />No data available`;
         }
 
         // Multiply the value by 100 if the unit is '%'
         if (unit === '%') {
             value *= 100;
+            return props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? `${unit}` : ''}</sup>` : 'Hover over a country';
+
+        } else {
+            return props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? ` (${unit})` : ''}</sup>` : 'Hover over a country';
         }
-        return props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? `${unit}` : ''}</sup>` : 'Hover over a country';
     } else {
         return `<h4>${map_title}</h4>Hover over a country`;
     }
@@ -60,35 +61,6 @@ function initializeMap(map_title, property_name, container_name) {
         this.update();
         return this._div;
     };
-
-    // info.update = function (props) {
-    //     if (props) {
-    //         const unit = getUnitOfMeasure(property_name);
-    //         let value = props[property_name];
-    
-    //         // Handle cases where the value is "NA"
-    //         if (value === "NA") {
-    //             this._div.innerHTML = `<h4>${map_title}</h4><b>${props.name}</b><br />No data available`;
-    //             return;
-    //         }
-    
-    //         // Multiply the value by 100 if the unit is '%'
-    //         if (unit === '%') {
-    //             value *= 100;
-    //             const contents = props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')}${unit ? `${unit}` : ''}</sup>` : 'Hover over a country';
-    //             this._div.innerHTML = `<h4>${map_title}</h4>${contents}`;
-    //         } else {
-    //             const contents = props ? `<b>${props.name}</b><br />${value.toLocaleString('en-US')} ${unit ? ` ${unit}` : ''}</sup>` : 'Hover over a country';
-    //             this._div.innerHTML = `<h4>${map_title}</h4>${contents}`;
-    //         }
-    
-    //     } else {
-    //         this._div.innerHTML = `<h4>${map_title}</h4>Hover over a country`;
-    //     }
-
-    // };
-   
-    // info.addTo(dataMap);
 
     // Add data sources
     sources = indicatorsData.features
@@ -139,7 +111,6 @@ function initializeMap(map_title, property_name, container_name) {
             .setContent(content)
             .openOn(dataMap);
 
-        // info.update(layer.feature.properties);
     }
 
     /* global statesData */
