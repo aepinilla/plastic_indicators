@@ -126,7 +126,6 @@ function initializeMap(map_title, property_name, container_name) {
 
     function resetHighlight(e) {
         geojson.resetStyle(e.target);
-        // info.update();
     }
 
     function zoomToFeature(e) {
@@ -164,15 +163,17 @@ function initializeMap(map_title, property_name, container_name) {
             from = grades[i];
             to = grades[i + 1];
     
-            // Multiply by 100 if the unit is "Percentage"
-            if (unit === '%') {
-                from *= 100;
-                to = to ? to * 100 : to;
-            }
+            // // Multiply by 100 if the unit is "Percentage"
+            // if (unit === '%') {
+            //     from *= 100;
+            //     to = to ? to * 100 : to;
+            // }
+
             const colorGroup = getColorGroup(property_name);
-    
-            labels.push(
-                `<i style="background:${getColor(from + 1, colorGroup)}"></i> ${from.toLocaleString()} ${to ? ` &ndash; ${to.toLocaleString()}` : '+'}`
+            const unit = getUnitOfMeasure(property_name); // Assuming you have a function to get the unit of measure
+
+            labels.push(                
+                `<i style="background:${getColor(from + 1, colorGroup, unit)}"></i> ${from.toLocaleString()} ${to ? ` &ndash; ${to.toLocaleString()}` : '+'}`
             );
         }
     
