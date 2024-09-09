@@ -74,7 +74,7 @@ function initializeMap(map_title, property_name, container_name) {
             // Create a div with a class name
             this_source = sources.find(source => source.name_in_database === property_name);
             const div = L.DomUtil.create('div', 'custom-attribution');
-            div.innerHTML = `<div style="text-align: left; max-width: 300px">Source: ${this_source.sources}</div>`;
+            div.innerHTML = `<div class="sources"><span>Source:</span> </br> <a href="${this_source.sources.url}" target="blank">${this_source.sources.text}</a></div>`;
             return div;
         }
     });
