@@ -25,7 +25,7 @@ function generatePopupContent(props) {
 }
 
 
-function initializeMap(map_title, property_name, container_name) {
+function initializeMap(property_name, container_name) {
     if (dataMap) {
         dataMap.remove();
     }
@@ -140,7 +140,6 @@ function initializeMap(map_title, property_name, container_name) {
         });
     }
 
-    // dataMap.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
     
@@ -162,15 +161,9 @@ function initializeMap(map_title, property_name, container_name) {
         for (let i = 0; i < grades.length; i++) {
             from = grades[i];
             to = grades[i + 1];
-    
-            // // Multiply by 100 if the unit is "Percentage"
-            // if (unit === '%') {
-            //     from *= 100;
-            //     to = to ? to * 100 : to;
-            // }
 
             const colorGroup = getColorGroup(property_name);
-            const unit = getUnitOfMeasure(property_name); // Assuming you have a function to get the unit of measure
+            const unit = getUnitOfMeasure(property_name);
 
             labels.push(                
                 `<i style="background:${getColor(from + 1, colorGroup, unit)}"></i> ${from.toLocaleString()} ${to ? ` &ndash; ${to.toLocaleString()}` : '+'}`
