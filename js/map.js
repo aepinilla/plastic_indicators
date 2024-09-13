@@ -180,4 +180,4 @@ function openTab(evt, tabName) {
     });
 }
 
-export { initializeMap, initializeLeakageMap, openTab };
+export { initializeMap, openTab };

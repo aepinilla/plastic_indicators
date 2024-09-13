@@ -15,7 +15,6 @@ const ids = [
     'plastic_recycling',
     'plastic_leaked_marine',
     'marine_activities_plastic',
-    'plastic_leakage'
 ];
 
 // Extract units of measure
