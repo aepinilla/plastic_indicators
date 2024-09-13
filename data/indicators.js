@@ -8,7 +8,7 @@ var indicatorsData = {
             "description": "Number of inhabitants in that country",
             "group": "socio-economic",
             "sources": {
-                "text": "World Bank",
+                "text": "World Bank Open Data",
                 "url": "https://data.worldbank.org/indicator/SP.POP.TOTL"
             }
         },
@@ -177,17 +177,17 @@ var indicatorsData = {
                 "url": "https://documents.worldbank.org/en/publication/documents-reports/documentdetail/099933108202431142/idu18e0bbc271c078143281a4e016dc43e77b919"
             }
         },
-        // Rivers
-        {
-            "indicator": "Rivers",
-            "name_in_database": "rivers",
-            "unit": "",
-            "description": "Demo",
-            "group": "rivers",
-            "sources": {
-                "text": "Demo.",
-                "url": "demo"
-            }
-        },
+        // // Rivers
+        // {
+        //     "indicator": "Rivers",
+        //     "name_in_database": "rivers",
+        //     "unit": "",
+        //     "description": "Demo",
+        //     "group": "rivers",
+        //     "sources": {
+        //         "text": "Demo.",
+        //         "url": "demo"
+        //     }
+        // },
     ]
 }

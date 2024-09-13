@@ -25,7 +25,7 @@ function generatePopupContent(props) {
 }
 
 
-function initializeMap(property_name, container_name) {
+function initializeMap(map_title, property_name, container_name) {
     if (dataMap) {
         dataMap.remove();
     }
@@ -37,7 +37,7 @@ function initializeMap(property_name, container_name) {
     const unit = getUnitOfMeasure(property_name);
     const legend = L.control({ position: 'bottomright' });
 
-    // Step 1: Define the geographical bounds
+    // Define the geographical bounds
     var southWest = L.latLng(-85, -180);
     var northEast = L.latLng(85, 180);
     var bounds = L.latLngBounds(southWest, northEast);
@@ -47,7 +47,7 @@ function initializeMap(property_name, container_name) {
         maxBoundsViscosity: 1.0
     }).setView([20, 78.0], 5);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
         minZoom: 3,
         attribution: '&copy; <a target="blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> Tiles taken from &copy; <a target="blank" href="https://carto.com/attributions">CARTO</a>'
@@ -140,6 +140,7 @@ function initializeMap(property_name, container_name) {
         });
     }
 
+    // dataMap.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
     
@@ -161,9 +162,15 @@ function initializeMap(property_name, container_name) {
         for (let i = 0; i < grades.length; i++) {
             from = grades[i];
             to = grades[i + 1];
+    
+            // // Multiply by 100 if the unit is "Percentage"
+            // if (unit === '%') {
+            //     from *= 100;
+            //     to = to ? to * 100 : to;
+            // }
 
             const colorGroup = getColorGroup(property_name);
-            const unit = getUnitOfMeasure(property_name);
+            const unit = getUnitOfMeasure(property_name); // Assuming you have a function to get the unit of measure
 
             labels.push(                
                 `<i style="background:${getColor(from + 1, colorGroup, unit)}"></i> ${from.toLocaleString()} ${to ? ` &ndash; ${to.toLocaleString()}` : '+'}`
