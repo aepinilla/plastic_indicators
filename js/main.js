@@ -56,6 +56,14 @@ function initializeMap(map_title, property_name, container_name) {
     
     L.geoJSON(allCountries, { style: whiteStyle }).addTo(dataMap);
 
+    // Add the rivers layer
+    L.geoJSON(southAsiaRivers, {
+        style: {
+            color: 'blue',
+            weight: 2
+        }
+    }).addTo(dataMap);
+
     info.onAdd = function (map) {
         this._div = L.DomUtil.create('div', 'info');
         this.update();
@@ -100,7 +108,7 @@ function initializeMap(map_title, property_name, container_name) {
         const layer = e.target;
 
         layer.setStyle({
-            weight: 5,
+            weight: 1,
             color: '#666',
             dashArray: '',
             fillOpacity: 0.7
@@ -161,12 +169,6 @@ function initializeMap(map_title, property_name, container_name) {
         for (let i = 0; i < grades.length; i++) {
             from = grades[i];
             to = grades[i + 1];
-    
-            // // Multiply by 100 if the unit is "Percentage"
-            // if (unit === '%') {
-            //     from *= 100;
-            //     to = to ? to * 100 : to;
-            // }
 
             const colorGroup = getColorGroup(property_name);
             const unit = getUnitOfMeasure(property_name); // Assuming you have a function to get the unit of measure
