@@ -101,6 +101,7 @@ function initializeMap(map_title, property_name, container_name) {
         }
     }
 
+
     // Create a popup instance for hover
     const hoverPopup = L.popup();
 
@@ -201,6 +202,14 @@ function initializeMap(map_title, property_name, container_name) {
     };
     
     legend.addTo(dataMap);
+
+    // Add the urban areas layer
+    L.geoJSON(urbanAreas, {
+        style: {
+            color: 'rgba(150, 10, 10, .9)',
+            weight: 1
+        }
+    }).addTo(dataMap);
 }
 
 function openTab(evt, tabName) {
