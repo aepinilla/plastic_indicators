@@ -108,7 +108,6 @@ function initializeMap(map_title, property_name, container_name) {
 
         layer.bringToFront();
 
-        // Show popup with "lala" text at the mouse coordinates
         const { latlng } = e;
         const content = generatePopupContent(layer.feature.properties);
         hoverPopup

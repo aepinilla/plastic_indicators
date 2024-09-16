@@ -1,1 +1,4 @@
 .vscode/
+data/borders/
+data/south_asia_rivers.geojson
+data/south_asia_rivers.qmd
