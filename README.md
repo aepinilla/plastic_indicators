@@ -11,7 +11,3 @@ This in an interactive map with data related to plastic indicators in the South 
 ```git@github.com:aepinilla/plastic_indicators.git```
 
 2. Open the index.html file.
-
-You should see something like this:
-
-![Sample Image](img/sample.png)
