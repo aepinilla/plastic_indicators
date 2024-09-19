@@ -62,6 +62,22 @@ function initializeMap(map_title, property_name, container_name) {
         }
     }).addTo(dataMap);
 
+    // Sample heatmap data (latitude, longitude, intensity)
+    var heatmapData = [
+        [51.505, -0.09, 0.5], // [latitude, longitude, intensity]
+        [51.515, -0.1, 0.8],
+        [51.525, -0.11, 0.3],
+        [51.535, -0.12, 0.7],
+        [51.545, -0.13, 0.4]
+    ];
+
+    // Create a heatmap layer and add it to the map
+    var heat = L.heatLayer(heatmapData, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+    }).addTo(dataMap);
+
     // Add indicators data for color overlay
     sources = indicatorsData.features
     const sourcesAttribution = L.Control.extend({
