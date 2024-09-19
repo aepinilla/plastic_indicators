@@ -127,14 +127,14 @@ function getColor(d, colorGroup) {
                   d > grades[grades.length - 6] ? colors[5] :
                   d > grades[grades.length - 7] ? colors[6] : colors[7];
 
-    console.log(`Value: ${d}, Color: ${color}`); // Print the value and color to the console
+    // console.log(`Value: ${d}, Color: ${color}`);
     return color;
 }
 
 function getColorMap(d, colorGroup, unit) {
     // Check if the value is "NA" and return grey color
     if (d === "NA") {
-        console.log(`Value: ${d}, Color: #808080`); // Print the value and color to the console
+        // console.log(`Value: ${d}, Color: #808080`);
         return '#808080'; // Grey color
     }
 
@@ -161,7 +161,7 @@ function getColorMap(d, colorGroup, unit) {
                   scaledValue > grades[grades.length - 6] ? colors[5] :
                   scaledValue > grades[grades.length - 7] ? colors[6] : colors[7];
 
-    console.log(`Value: ${scaledValue}, Color: ${color}`); // Print the scaled value and color to the console
+    // console.log(`Value: ${scaledValue}, Color: ${color}`);
     return color;
 }
 

@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Create and style clusters</title>
 <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.2.2/maptiler-sdk.umd.js"></script>
+<script src="env.js"></script>
+
 <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.2.2/maptiler-sdk.css" rel="stylesheet" />
 <style>
   body {margin: 0; padding: 0;}
@@ -15,7 +17,7 @@
 <div id="map"></div>
 
 <script>
-    maptilersdk.config.apiKey = '4lDqnefjzoWjPGk5BOXU';
+    maptilersdk.config.apiKey = MAPTILER_API_KEY;
     var map = new maptilersdk.Map({
         container: 'map',
         zoom: 0.3,

@@ -24,7 +24,6 @@ function generatePopupContent(props) {
     }
 }
 
-
 function initializeMap(map_title, property_name, container_name) {
     if (dataMap) {
         dataMap.remove();
@@ -34,7 +33,7 @@ function initializeMap(map_title, property_name, container_name) {
     const info = L.control();
     const features = asiaGeoData.features;
     const values = features.map(feature => feature.properties[property_name]);
-    const unit = getUnitOfMeasure(property_name);
+    // const unit = getUnitOfMeasure(property_name);
     const legend = L.control({ position: 'bottomright' });
 
     // Define the geographical bounds
@@ -64,31 +63,23 @@ function initializeMap(map_title, property_name, container_name) {
         }
     }).addTo(dataMap);
 
-    info.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info');
-        this.update();
-        return this._div;
-    };
-
-    // Add data sources
+    // Add indicators data for color overlay
     sources = indicatorsData.features
-    // Create a custom control for the attribution
-    const customAttribution = L.Control.extend({
+    const sourcesAttribution = L.Control.extend({
         options: {
-            position: 'bottomleft' // Position the control in the bottom left corner
+            position: 'bottomleft'
         },
 
         onAdd: function (map) {
-            // Create a div with a class name
             this_source = sources.find(source => source.name_in_database === property_name);
-            const div = L.DomUtil.create('div', 'custom-attribution');
+            const div = L.DomUtil.create('div', 'source-attribution');
             div.innerHTML = `<div class="sources"><span>Source:</span> </br> <a href="${this_source.sources.url}" target="blank">${this_source.sources.text}</a></div>`;
             return div;
         }
     });
     
     // Add the custom attribution control to the map
-    dataMap.addControl(new customAttribution());
+    dataMap.addControl(new sourcesAttribution());
 
     if (property_name === 'marine_activities_plastic') {
         console.log('marine_activities_plastic');
@@ -101,11 +92,10 @@ function initializeMap(map_title, property_name, container_name) {
         }
     }
 
-
     // Create a popup instance for hover
     const hoverPopup = L.popup();
 
-    // Add the urban areas layer
+    // // Add the urban areas layer
     const urbanAreasLayer = L.geoJSON(urbanAreas, {
         style: {
             color: 'rgba(150, 10, 10, .9)',
@@ -113,6 +103,7 @@ function initializeMap(map_title, property_name, container_name) {
         }
     }).addTo(dataMap);
 
+    
     function highlightFeature(e) {
         const layer = e.target;
 
@@ -151,6 +142,7 @@ function initializeMap(map_title, property_name, container_name) {
         dataMap.fitBounds(e.target.getBounds());
     }
 
+    // Apply color overlay and mouse actions
     function onEachFeature(feature, layer) {
         layer.on({
             mouseover: highlightFeature,
@@ -159,12 +151,11 @@ function initializeMap(map_title, property_name, container_name) {
         });
     }
 
-    // dataMap.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
     
         // Create the title div
-        const titleDiv = L.DomUtil.create('div', 'legend-title', div);
+        // const titleDiv = L.DomUtil.create('div', 'legend-title', div);
         const unit = getUnitOfMeasure(property_name);
     
         // Change unit to "Percentage" if it is "%"
@@ -174,7 +165,7 @@ function initializeMap(map_title, property_name, container_name) {
         }
     
         // Set the unit as the title with a line break
-        titleDiv.innerHTML = `<strong>${displayUnit}</strong><br><br>`;
+        // titleDiv.innerHTML = `<strong>${displayUnit}</strong><br><br>`;
         
         const labels = [];
         let from, to;
@@ -205,9 +196,9 @@ function initializeMap(map_title, property_name, container_name) {
             );
         }
     
-        // Create the numbers div and append the labels
-        const numbersDiv = L.DomUtil.create('div', 'legend-numbers', div);
-        numbersDiv.innerHTML = labels.join('<br>');
+        // Create the legend numbers and append the labels
+        const legendNumbers = L.DomUtil.create('div', 'legend-numbers', div);
+        legendNumbers.innerHTML = labels.join('<br>');
     
         return div;
     };
@@ -217,7 +208,7 @@ function initializeMap(map_title, property_name, container_name) {
     // Add the urban areas layer
     L.geoJSON(urbanAreas, {
         style: {
-            color: 'rgba(150, 10, 10, .9)',
+            color: 'rgba(150, 10, 10, 1)',
             weight: 1
         }
     }).addTo(dataMap);
