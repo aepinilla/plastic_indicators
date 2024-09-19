@@ -105,6 +105,14 @@ function initializeMap(map_title, property_name, container_name) {
     // Create a popup instance for hover
     const hoverPopup = L.popup();
 
+    // Add the urban areas layer
+    const urbanAreasLayer = L.geoJSON(urbanAreas, {
+        style: {
+            color: 'rgba(150, 10, 10, .9)',
+            weight: 1
+        }
+    }).addTo(dataMap);
+
     function highlightFeature(e) {
         const layer = e.target;
 
@@ -116,6 +124,9 @@ function initializeMap(map_title, property_name, container_name) {
         });
 
         layer.bringToFront();
+
+        // Bring urban areas layer to the front
+        urbanAreasLayer.bringToFront();
 
         const { latlng } = e;
         const content = generatePopupContent(layer.feature.properties);
