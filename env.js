@@ -1,1 +1,0 @@
-const MAPTILER_API_KEY = "kk2Hk9uPw89qFBfDiM98"
