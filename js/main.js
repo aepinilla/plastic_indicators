@@ -33,7 +33,6 @@ function initializeMap(map_title, property_name, container_name) {
     const info = L.control();
     const features = asiaGeoData.features;
     const values = features.map(feature => feature.properties[property_name]);
-    // const unit = getUnitOfMeasure(property_name);
     const legend = L.control({ position: 'bottomright' });
 
     // Define the geographical bounds
@@ -53,7 +52,7 @@ function initializeMap(map_title, property_name, container_name) {
     }).addTo(dataMap);
 
     
-    L.geoJSON(allCountries, { style: whiteStyle }).addTo(dataMap);
+    // L.geoJSON(allCountries, { style: whiteStyle }).addTo(dataMap);
 
     // Add the rivers layer
     L.geoJSON(southAsiaRivers, {
