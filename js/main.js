@@ -52,7 +52,7 @@ function initializeMap(map_title, property_name, container_name) {
     }).addTo(dataMap);
 
     
-    // L.geoJSON(allCountries, { style: whiteStyle }).addTo(dataMap);
+    L.geoJSON(allCountries, { style: whiteStyle }).addTo(dataMap);
 
     // Add the rivers layer
     L.geoJSON(southAsiaRivers, {
