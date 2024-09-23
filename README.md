@@ -6,9 +6,9 @@ Live demo: https://aepinilla.github.io/plastic_indicators/
 
 # Instructions
 
-1. Clone this repository
+1. Download this repository (click on the green button, and select download as Zip. You can also clone it with this command:
 
-```git@github.com:aepinilla/plastic_indicators.git```
+```git clone git@github.com:aepinilla/plastic_indicators.git```
 
 2. Open the index.html file.
 
