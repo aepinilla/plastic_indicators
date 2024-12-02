@@ -45,6 +45,14 @@ function initializeMap(map_title, property_name, container_name) {
         maxBoundsViscosity: 1.0
     }).setView([20, 78.0], 5);
 
+    // Hide the preloader once the map and data are fully loaded
+    dataMap.on('load', function() {
+        document.getElementById('preloader').style.display = 'none';
+    });
+
+    // Trigger the load event manually after adding the heatmap layer
+    dataMap.fire('load');
+
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
         minZoom: 3,
